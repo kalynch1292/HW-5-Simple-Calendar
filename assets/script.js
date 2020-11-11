@@ -1,56 +1,48 @@
+$(document).ready(function () {
+    // // each hour needs a variable to get from local storage //
 
-// each hour needs a variable to get from local storage //
+    // var nineAl = localStorage.getItem("hour9");
+    // var tenAl = localStorage.getItem("hour10");
+    // var elevenAl = localStorage.getItem("hour11");
+    // var noonl = localStorage.getItem("hour12");
+    // var onePl = localStorage.getItem("hour13");
+    // var twoPl = localStorage.getItem("hour14");
+    // var threePl = localStorage.getItem("hour15");
+    // var fourPl = localStorage.getItem("hour16");
+    // var fivePl = localStorage.getItem("hour17");
 
-var nineAl = localStorage.getItem("hour9");
-var tenAl = localStorage.getItem("hour10");
-var elevenAl = localStorage.getItem("hour11");
-var noonl = localStorage.getItem("hour12");
-var onePl = localStorage.getItem("hour13");
-var twoPl = localStorage.getItem("hour14");
-var threePl = localStorage.getItem("hour15");
-var fourPl = localStorage.getItem("hour16");
-var fivePl = localStorage.getItem("hour17");
+    // each div needs an id to use the L.S//
 
-// each div needs an id to use the L.S//
-
-// probably could use an array for these//
-// .data gives numerical value to div//
-
-var saveNine = $("#hour9").data("hour");
-var saveTen = $("#hour10").data("hour");
-var saveEleven = $("#hour11").data("hour");
-var saveNoon = $("#hour12").data("hour");
-var saveOne = $("#hour13").data("hour");
-var saveTwo = $("#hour14").data("hour");
-var saveThree = $("#hour15").data("hour");
-var saveFour = $("#hour16").data("hour");
-var saveFive = $("#hour17").data("hour");
+    // probably could use an array for these//
+    // .data gives numerical value to div//
 
 
-var totalTimes = [
-    saveNine, saveTen, saveEleven, saveNoon, saveOne, saveTwo, saveThree, saveFour, saveFive
-]
-
-var currentTime = moment().hour();
-
-// .style //
-
-for (var i = 0; i < totalTimes.length; i++) {
-    console.log(totalTimes[i])
-    console.log(currentTime)
-    if (totalTimes[i] > currentTime) {
-        totalTimes[i].addClass(".future");
-    } if (totalTimes[i] < currentTime) {
-        totalTimes[i].addClass(".past");
-    } else (totalTimes[i] = currentTime) 
-        totalTimes[i].addClass(".present");
-
-}
 
 
-// save button //
-$(".saveBtn").on("click", function (event) {
-    event.preventDefault();
 
+    var currentTime = moment().format("H");
 
+    function changeTimeBlocks() {
+
+        for (var i = 9; i < 18; i++) {
+
+            if (i > currentTime) {
+                $("#hour" + i).children(".description").addClass("future");
+            } else if (i < currentTime) {
+                $("#hour" + i).children(".description").addClass(" past");
+            } else {
+                $("#hour" + i).children(".description").addClass("present");
+
+            }
+            var gettingLS = localStorage.getItem("text" + i);
+            $("#hour" + i).children(".description").val(gettingLS);
+        }
+    }
+    changeTimeBlocks();
+    $(".saveBtn").on("click", function () {
+        var hour = $(this).parent().attr("data-hour");
+        console.log(hour)
+        var text = $("#hour" + hour).children(".description").val().trim()
+        localStorage.setItem("text" + hour, text)
+    })
 })
